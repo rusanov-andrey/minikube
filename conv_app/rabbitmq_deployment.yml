@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: conv-app-rabbitmq
-          image: rabbitmq:4.2.4
+          image: rabbitmq:4.2.4-management
           ports:
             - containerPort: 15672
             - containerPort: 5672
@@ -25,7 +25,7 @@ spec:
               value: rabbit_user_password
           resources:
             limits:
-              memory: "256Mi"
+              memory: "512Mi"
               cpu: "500m"
           volumeMounts:
             - name: rabbitmq-data
