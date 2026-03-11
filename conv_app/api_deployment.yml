@@ -35,11 +35,11 @@ spec:
                   name: secrets
                   key: AMQP_PASSWORD
             - name: AMQP_HOSTNAME
-              value: http://rabbitmq-clusterip:5672
+              value: rabbitmq-clusterip:5672
           volumeMounts:
             - name: api-data
               mountPath: /opt/app/uploads          
       volumes:
         - name: api-data
           persistentVolumeClaim:
-            claimName: rabbitmq-pvc
+            claimName: api-pvc
