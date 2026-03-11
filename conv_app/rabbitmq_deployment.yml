@@ -20,9 +20,15 @@ spec:
             - containerPort: 5672
           env:
             - name: SEED_USERNAME
-              value: rabbit_user
+              valueFrom:
+                secretKeyRef:
+                  name: secrets
+                  key: SEED_USERNAME
             - name: SEED_USER_PASSWORD
-              value: rabbit_user_password
+              valueFrom:
+                secretKeyRef:
+                  name: secrets
+                  key: SEED_USER_PASSWORD
           resources:
             limits:
               memory: "512Mi"
