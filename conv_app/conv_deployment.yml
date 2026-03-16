@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: conv-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      components: conv
+  template:
+    metadata:
+      labels:
+        components: conv
+    spec:
+      containers:
+        - name: conv
+          image: antonlarichev/conv-service:1.0
+          ports:
+            - containerPort: 3000
+          resources:
+            limits:
+              memory: "128Mi"
+              cpu: "250m"
+          env:
+            - name: AMQP_EXCHANGE
+              value: conv
+            - name: AMQP_USER
+              valueFrom:
+                secretKeyRef:
+                  name: secrets
+                  key: AMQP_USER
+            - name: AMQP_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: secrets
+                  key: AMQP_PASSWORD
+            - name: AMQP_HOSTNAME
+              value: rabbitmq-clusterip:5672
+            - name: AMQP_QUEUE
+              value: conv
