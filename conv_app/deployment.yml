@@ -17,6 +17,12 @@ spec:
           image: antonlarichev/conv-app:1.2
           ports:
             - containerPort: 80
+          env:
+            - name: VITE_DOMAIN
+              valueFrom:
+                configMapKeyRef:
+                  name: conv-app-config
+                  key: VITE_DOMAIN
           resources:
             limits:
               memory: "256Mi"
