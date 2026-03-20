@@ -1,0 +1,9 @@
+app:
+  name: conv-app
+  replicas: 1
+  image:
+    name: antonlarichev/conv-app
+    tag: "1.2"
+  components: frontend
+  host: conv.test
+  port: 80
