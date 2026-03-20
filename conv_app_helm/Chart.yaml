@@ -1,6 +1,6 @@
 apiVersion: v2
 name: conv_app_helm
-description: A Helm chart for Kubernetes
+description: Video converter
 
 # A chart can be either an 'application' or a 'library' chart.
 #
