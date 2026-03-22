@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: "{{ .Values.rabbitmq.name }}-clusterip"
+spec:
+  type: ClusterIP
+  ports: {{ .Values.rabbitmq.ports | toYaml | nindent 4}}
+  selector:
+    components: {{ .Values.rabbitmq.name }}
+

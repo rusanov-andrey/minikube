@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: "{{ .Values.conv.name }}-deployment"
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      components: {{ .Values.conv.name }}
+  template:
+    metadata:
+      labels:
+        components: {{ .Values.conv.name }}
+    spec:
+      containers:
+        - name: {{ .Values.conv.name }}
+          image: "{{ .Values.conv.image.name }}:{{ .Values.conv.image.tag }}"
+          ports:
+            - containerPort: {{ .Values.conv.port }}
+          resources:
+            limits:
+              memory: "128Mi"
+              cpu: "250m"
+          env:
+            {{- range .Values.api.envs}}
+            {{- $data := dict "name" . "value" (get $.Values.envs .)}}
+            {{- include "env_template" $data | nindent 12 }}
+            {{- end}}
+
+            {{- range .Values.api.secret_envs}}
+            {{- $data := dict "name" . "secret" (get $.Values.secret_envs .)}}
+            {{- include "secret_env_template" $data | nindent 12 }}
+            {{- end}}

@@ -7,3 +7,59 @@ app:
   components: frontend
   host: conv.test
   port: 80
+
+api:
+  name: conv-api
+  replicas: 1
+  image:
+    name: antonlarichev/conv-api
+    tag: "1.0"
+  components: api
+  port: 3000
+  envs:
+    - AMQP_EXCHANGE
+    - AMQP_HOSTNAME
+  secret_envs:
+    - AMQP_USER
+    - AMQP_PASSWORD
+
+rabbitmq:
+  name: rabbitmq
+  ports: 
+    - name: admin
+      port: 15672
+      protocol: TCP
+    - name: main
+      port: 5672
+      protocol: TCP
+  image:
+    name: rabbitmq
+    tag: "4.2.4-management"
+  secret_envs:
+    - SEED_USERNAME
+    - SEED_USER_PASSWORD
+
+conv:
+  name: conv
+  port: 3000
+  image:
+    name: antonlarichev/conv-service
+    tag: "1.0"
+  envs:
+    - AMQP_EXCHANGE
+    - AMQP_HOSTNAME
+    - AMPQ_QUEUE
+  secret_envs:
+    - AMQP_USER
+    - AMQP_PASSWORD
+
+envs:
+  AMQP_EXCHANGE: conv
+  AMQP_HOSTNAME: rabbitmq-clusterip:5672
+  AMPQ_QUEUE: conv
+
+secret_envs:
+  AMQP_USER: secrets
+  AMQP_PASSWORD: secrets
+  SEED_USERNAME: secrets
+  SEED_USER_PASSWORD: secrets
